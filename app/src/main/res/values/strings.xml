@@ -7,4 +7,5 @@
     <string name="title_circles">Circles</string>
     <string name="title_triangles">Triangles</string>
     <string name="title_all">All</string>
+    <string name="common_error">Something wrong!!!</string>
 </resources>
