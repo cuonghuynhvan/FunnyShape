@@ -7,7 +7,6 @@ import com.liv3ly.funnyshape.data.api.BackgroundAPIService
 import java.io.IOException
 import kotlin.math.roundToInt
 
-
 class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
     private fun generateRandomSize(screenWidth: Int, screenHeight: Int): Int {
         //        Create a shape at a random size within appropriate ranges.
@@ -33,7 +32,6 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
     suspend fun generateSquare(screenWidth: Int, screenHeight: Int): Shape {
         val square = Square(
             size = generateRandomSize(screenWidth, screenHeight),
-            backgroundColor = generateRandomColor()
         )
         try {
             val colorList = backgroundAPIService.getRandomColors()
@@ -41,10 +39,12 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
             if (colorList.isNotEmpty()) {
                 val rgb = colorList[0].rgb
                 square.backgroundColor = convertColorFromRGB(rgb.red, rgb.green, rgb.blue)
+                return square
             }
         } catch (e: IOException) {
         }
 
+        square.backgroundColor = generateRandomColor()
         return square
     }
 }
