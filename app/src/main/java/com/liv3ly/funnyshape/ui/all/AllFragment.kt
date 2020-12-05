@@ -1,4 +1,4 @@
-package com.liv3ly.funnyshape.ui.home
+package com.liv3ly.funnyshape.ui.all
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,22 +10,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.liv3ly.funnyshape.R
 
-class HomeFragment : Fragment() {
+class AllFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var allViewModel: AllViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProvider(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        allViewModel =
+                ViewModelProvider(this).get(AllViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_funny_shape, container, false)
+
         return root
     }
 }

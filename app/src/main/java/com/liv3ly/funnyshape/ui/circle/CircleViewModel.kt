@@ -1,10 +1,10 @@
-package com.liv3ly.funnyshape.ui.notifications
+package com.liv3ly.funnyshape.ui.circle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class CircleViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"
