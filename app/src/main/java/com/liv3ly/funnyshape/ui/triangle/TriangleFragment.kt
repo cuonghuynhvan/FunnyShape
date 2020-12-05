@@ -10,15 +10,19 @@ import com.liv3ly.funnyshape.R
 
 class TriangleFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: TriangleViewModel
+    private lateinit var triangleViewModel: TriangleViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        triangleViewModel =
+            ViewModelProvider(this).get(TriangleViewModel::class.java)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-                ViewModelProvider(this).get(TriangleViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_funny_shape, container, false)
 
         return root
