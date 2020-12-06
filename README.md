@@ -1,7 +1,7 @@
 # FunnyShape
 
 ## What have been done?
-![Alt Text](https://github.com/cuonghuynhvan/FunnyShape/blob/main/demo.gif?raw=true)
+![Alt Text](https://github.com/cuonghuynhvan/FunnyShape/blob/main/demo.gif?raw=true =367x652)
 
 ## What need to improve?
 - Sync all shape state between view & view mode.
