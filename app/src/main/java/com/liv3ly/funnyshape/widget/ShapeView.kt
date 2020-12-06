@@ -4,13 +4,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.core.view.GestureDetectorCompat
 
 open class ShapeView : View, GestureDetector.OnGestureListener,
     GestureDetector.OnDoubleTapListener {
+    private var lastX: Float = 0F
+    private var lastY: Float = 0F
     private lateinit var mDetector: GestureDetectorCompat
     private var mOnDoubleTapListener: ((shapeView: ShapeView) -> Boolean)? = null
     private var _shapeColor: Int = Color.WHITE
@@ -70,6 +75,12 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
     }
 
     override fun onDown(e: MotionEvent?): Boolean {
+        if(e == null) {
+            return false
+        }
+
+        lastX = e.rawX
+        lastY = e.rawY
         return true
     }
 
@@ -85,6 +96,18 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
         distanceX: Float,
         distanceY: Float
     ): Boolean {
+        if (layoutParams !is ViewGroup.MarginLayoutParams || e2 == null) {
+            return false
+        }
+        Log.d("SHAPE_VIEW", "onScroll ${e2.rawX}")
+        val lp = layoutParams as ViewGroup.MarginLayoutParams
+        val dX = lastX - e2.rawX
+        val dY = lastY - e2.rawY
+        lastX = e2.rawX
+        lastY = e2.rawY
+        lp.leftMargin = (lp.leftMargin - dX).toInt()
+        lp.topMargin = (lp.topMargin - dY).toInt()
+        requestLayout()
         return true
     }
 
