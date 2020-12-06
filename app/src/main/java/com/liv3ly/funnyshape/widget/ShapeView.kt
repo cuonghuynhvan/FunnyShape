@@ -1,6 +1,7 @@
 package com.liv3ly.funnyshape.widget
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -11,6 +12,13 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
     GestureDetector.OnDoubleTapListener {
     private lateinit var mDetector: GestureDetectorCompat
     private var mOnDoubleTapListener: ((shapeView: ShapeView) -> Boolean)? = null
+    private var _shapeColor: Int = Color.WHITE
+    var shapeColor: Int
+        get() = _shapeColor
+        set(value) {
+            this._shapeColor = value
+            invalidate()
+        }
 
     constructor(
         context: Context
@@ -33,21 +41,19 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
         init()
     }
 
-    fun init() {
+    private fun init() {
         mDetector = GestureDetectorCompat(context, this)
-        mDetector.setOnDoubleTapListener(this);
-    }
-
-    open fun setShapeColor(color: Int) {
-
+        mDetector.setOnDoubleTapListener(this)
     }
 
     fun setOnDoubleTabListener(onDoubleTapListener: (shapeView: ShapeView) -> Boolean) {
         mOnDoubleTapListener = onDoubleTapListener
     }
 
+    open fun isDownEventInside(event: MotionEvent): Boolean = true
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        return if (mDetector.onTouchEvent(event)) {
+        return if (isDownEventInside(event) && mDetector.onTouchEvent(event)) {
             true
         } else {
             super.onTouchEvent(event)

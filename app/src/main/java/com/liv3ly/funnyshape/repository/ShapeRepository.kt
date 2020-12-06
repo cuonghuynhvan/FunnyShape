@@ -1,6 +1,7 @@
 package com.liv3ly.funnyshape.repository
 
 import androidx.annotation.WorkerThread
+import com.liv3ly.funnyshape.common.Circle
 import com.liv3ly.funnyshape.common.Shape
 import com.liv3ly.funnyshape.common.Square
 import com.liv3ly.funnyshape.data.api.BackgroundAPIService
@@ -50,5 +51,14 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
         )
         square.backgroundColor = generateColor()
         return square
+    }
+
+    @WorkerThread
+    suspend fun generateCircle(screenWidth: Int, screenHeight: Int): Shape {
+        val circle = Circle(
+            size = generateRandomSize(screenWidth, screenHeight),
+        )
+        circle.backgroundColor = generateColor()
+        return circle
     }
 }

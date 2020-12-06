@@ -1,13 +1,12 @@
 package com.liv3ly.funnyshape.ui.circle
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.liv3ly.funnyshape.common.Shape
+import com.liv3ly.funnyshape.repository.ShapeRepository
+import com.liv3ly.funnyshape.ui.common.ShapeViewModel
 
-class CircleViewModel : ViewModel() {
+class CircleViewModel(private val shapeRepository: ShapeRepository) : ShapeViewModel() {
+    override suspend fun callGenerateShape(screenWidth: Int, screenHeight: Int): Shape =
+        shapeRepository.generateCircle(screenWidth, screenHeight)
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
-    }
-    val text: LiveData<String> = _text
+    override suspend fun callGenerateShapeBackground(): Any = shapeRepository.generateColor()
 }

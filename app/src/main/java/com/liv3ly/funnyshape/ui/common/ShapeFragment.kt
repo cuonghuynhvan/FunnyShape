@@ -96,7 +96,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
         hideLoading()
 
         if (background is Int) {
-            tempShapeView.setShapeColor(background)
+            tempShapeView.shapeColor = background
         }
     }
 

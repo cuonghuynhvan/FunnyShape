@@ -32,7 +32,7 @@ abstract class ShapeViewModel() : ViewModel() {
     fun generateShape(x: Float, y: Float) {
         viewModelScope.launch(exceptionHandler) {
             _generateActionResult.postValue(ActionResult.loading())
-            val shape = calGenerateShape(screenHeight, screenHeight)
+            val shape = callGenerateShape(screenHeight, screenHeight)
             shape.setCenterPoint(x, y)
             _generateActionResult.postValue(ActionResult.success(shape))
         }
@@ -41,11 +41,11 @@ abstract class ShapeViewModel() : ViewModel() {
     fun changeShapeBackground() {
         viewModelScope.launch(exceptionHandler) {
             _generateBackgroundActionResult.postValue(ActionResult.loading())
-            val color = calGenerateShapeBackground()
+            val color = callGenerateShapeBackground()
             _generateBackgroundActionResult.postValue(ActionResult.success(color))
         }
     }
 
-    abstract suspend fun calGenerateShape(screenWidth: Int, screenHeight: Int): Shape
-    abstract suspend fun calGenerateShapeBackground(): Any
+    abstract suspend fun callGenerateShape(screenWidth: Int, screenHeight: Int): Shape
+    abstract suspend fun callGenerateShapeBackground(): Any
 }
