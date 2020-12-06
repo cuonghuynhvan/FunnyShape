@@ -5,19 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.liv3ly.funnyshape.R
-import com.liv3ly.funnyshape.common.Constant
 import com.liv3ly.funnyshape.common.Shape
-import com.liv3ly.funnyshape.widget.CircleView
-import com.liv3ly.funnyshape.widget.ShapeView
-import com.liv3ly.funnyshape.widget.SquareView
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 abstract class ShapeViewModel() : ViewModel() {
-
-    val shapeList = ArrayList<Shape>()
-
     private val _generateActionResult = MutableLiveData<ActionResult<Shape>>()
     val generateActionResult: LiveData<ActionResult<Shape>> = _generateActionResult
 
@@ -42,7 +35,6 @@ abstract class ShapeViewModel() : ViewModel() {
             val shape = callGenerateShape()
             shape.size = generateRandomSize()
             shape.setCenterPoint(x, y)
-            shapeList.add(shape)
             _generateActionResult.postValue(ActionResult.success(shape))
         }
     }

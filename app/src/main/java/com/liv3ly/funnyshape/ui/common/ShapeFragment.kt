@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -56,15 +57,8 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        restoreDataFromViewModel()
         observeViewModel()
         bindViewModelAction()
-    }
-
-    private fun restoreDataFromViewModel() {
-        viewModel.shapeList.forEach {
-            addShapeView(it)
-        }
     }
 
     private fun observeViewModel() {
@@ -116,6 +110,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
             is Int -> {
                 shapeView.shapeBitmap = null
                 shapeView.shapeColor = background
+                startShapeAnimation(shapeView)
                 hideLoading()
             }
             is String -> {
@@ -128,6 +123,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
                             transition: Transition<in Bitmap?>?
                         ) {
                             shapeView.shapeBitmap = resource
+                            startShapeAnimation(shapeView)
                             hideLoading()
                         }
 
@@ -142,6 +138,11 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
             else -> {
             }
         }
+    }
+
+    private fun startShapeAnimation(shapeView: ShapeView)  {
+        val anim = AnimationUtils.loadAnimation(context, R.anim.anim_appear)
+        shapeView.startAnimation(anim)
     }
 
     private fun bindViewModelAction() {

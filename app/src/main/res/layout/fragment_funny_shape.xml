@@ -5,6 +5,7 @@
 
     <com.liv3ly.funnyshape.widget.ShapeLayout
         android:id="@+id/shapeLayout"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
