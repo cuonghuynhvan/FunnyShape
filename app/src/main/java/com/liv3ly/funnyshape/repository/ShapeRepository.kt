@@ -29,22 +29,26 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
         (255 and 0xff shl 24) or (red and 0xff shl 16) or (green and 0xff shl 8) or (blue and 0xff)
 
     @WorkerThread
-    suspend fun generateSquare(screenWidth: Int, screenHeight: Int): Shape {
-        val square = Square(
-            size = generateRandomSize(screenWidth, screenHeight),
-        )
+    suspend fun generateColor(): Int {
         try {
             val colorList = backgroundAPIService.getRandomColors()
 
             if (colorList.isNotEmpty()) {
                 val rgb = colorList[0].rgb
-                square.backgroundColor = convertColorFromRGB(rgb.red, rgb.green, rgb.blue)
-                return square
+                return convertColorFromRGB(rgb.red, rgb.green, rgb.blue)
             }
         } catch (e: IOException) {
         }
 
-        square.backgroundColor = generateRandomColor()
+        return generateRandomColor()
+    }
+
+    @WorkerThread
+    suspend fun generateSquare(screenWidth: Int, screenHeight: Int): Shape {
+        val square = Square(
+            size = generateRandomSize(screenWidth, screenHeight),
+        )
+        square.backgroundColor = generateColor()
         return square
     }
 }

@@ -15,16 +15,19 @@ import com.liv3ly.funnyshape.common.ViewModelFactory
 import com.liv3ly.funnyshape.data.api.APIBuilder
 import com.liv3ly.funnyshape.repository.ShapeRepository
 import com.liv3ly.funnyshape.widget.ShapeLayout
+import com.liv3ly.funnyshape.widget.ShapeView
 import com.nimble.survey.module.common.ActionStatus
 
 class SquareFragment : Fragment() {
     private lateinit var squareViewModel: SquareViewModel
     private lateinit var shapeLayout: ShapeLayout
     private lateinit var loadingView: View
+    private lateinit var tempShapeView: ShapeView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelFactory = ViewModelFactory(ShapeRepository(APIBuilder.getBackgroundAPIService()))
+        val viewModelFactory =
+            ViewModelFactory(ShapeRepository(APIBuilder.getBackgroundAPIService()))
         squareViewModel =
             ViewModelProvider(this, viewModelFactory).get(SquareViewModel::class.java)
     }
@@ -37,7 +40,7 @@ class SquareFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_funny_shape, container, false)
         shapeLayout = root.findViewById(R.id.shapeLayout)
         loadingView = root.findViewById(R.id.loadingLayout)
-        loadingView.setOnClickListener {  }
+        loadingView.setOnClickListener { }
         return root
     }
 
@@ -52,7 +55,16 @@ class SquareFragment : Fragment() {
             val shapeResult = it ?: return@Observer
 
             when (shapeResult.status) {
-                ActionStatus.SUCCESS -> addShapeView(shapeResult.data)
+                ActionStatus.SUCCESS -> addShapeView(shapeResult.data!!)
+                ActionStatus.LOADING -> showLoading()
+                ActionStatus.ERROR -> hideLoading()
+            }
+        })
+        squareViewModel.generateBackgroundActionResult.observe(viewLifecycleOwner, Observer {
+            val shapeResult = it ?: return@Observer
+
+            when (shapeResult.status) {
+                ActionStatus.SUCCESS -> changeShapeBackground(shapeResult.data!!)
                 ActionStatus.LOADING -> showLoading()
                 ActionStatus.ERROR -> hideLoading()
             }
@@ -67,9 +79,20 @@ class SquareFragment : Fragment() {
         loadingView.visibility = View.GONE
     }
 
-    private fun addShapeView(shape: Shape?) {
+    private fun addShapeView(shape: Shape) {
         hideLoading()
-        Utils.addShapeIntoShapeLayout(shape, shapeLayout)
+        val shapeView = Utils.addShapeIntoShapeLayout(shape, shapeLayout)
+
+        shapeView.setOnDoubleTabListener {
+            tempShapeView = it
+            squareViewModel.changeShapeBackground()
+            return@setOnDoubleTabListener true
+        }
+    }
+
+    private fun changeShapeBackground(color: Int) {
+        hideLoading()
+        tempShapeView.setShapeColor(color)
     }
 
     private fun bindViewModelAction() {

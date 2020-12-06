@@ -16,6 +16,9 @@ class SquareViewModel(private val shapeRepository: ShapeRepository) : ViewModel(
     private val _generateActionResult = MutableLiveData<ActionResult<Shape>>()
     val generateActionResult: LiveData<ActionResult<Shape>> = _generateActionResult
 
+    private val _generateBackgroundActionResult = MutableLiveData<ActionResult<Int>>()
+    val generateBackgroundActionResult: LiveData<ActionResult<Int>> = _generateBackgroundActionResult
+
     private var screenWidth = 0
     private var screenHeight = 0
 
@@ -34,6 +37,14 @@ class SquareViewModel(private val shapeRepository: ShapeRepository) : ViewModel(
             val shape = shapeRepository.generateSquare(screenWidth, screenHeight)
             shape.setCenterPoint(x, y)
             _generateActionResult.postValue(ActionResult.success(shape))
+        }
+    }
+
+    fun changeShapeBackground() {
+        viewModelScope.launch(exceptionHandler) {
+            _generateBackgroundActionResult.postValue(ActionResult.loading())
+            val color = shapeRepository.generateColor()
+            _generateBackgroundActionResult.postValue(ActionResult.success(color))
         }
     }
 }

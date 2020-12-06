@@ -21,15 +21,15 @@ class Utils {
             return shapeView
         }
 
-        fun addShapeIntoShapeLayout(data: Shape?, shapeLayout: ShapeLayout)  {
-            val shape = data ?: return
-
+        fun addShapeIntoShapeLayout(shape: Shape, shapeLayout: ShapeLayout): ShapeView  {
             val shapeView = createViewByShape(shapeLayout.context, shape)
             val layoutParam: FrameLayout.LayoutParams = FrameLayout.LayoutParams(shape.size, shape.size)
             layoutParam.leftMargin = (shape.centerX - shape.size / 2).roundToInt()
             layoutParam.topMargin = (shape.centerY - shape.size / 2).roundToInt()
 
             shapeLayout.addView(shapeView, layoutParam)
+
+            return shapeView
         }
     }
 }
