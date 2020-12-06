@@ -8,5 +8,6 @@ class SquareViewModel(private val shapeRepository: ShapeRepository) : ShapeViewM
     override suspend fun callGenerateShape(): Shape =
         shapeRepository.generateSquare()
 
-    override suspend fun callGenerateShapeBackground(): Any = shapeRepository.generateImage()
+    override suspend fun callGenerateShapeBackground(shapeType: Int): Any =
+        shapeRepository.generateImage()
 }

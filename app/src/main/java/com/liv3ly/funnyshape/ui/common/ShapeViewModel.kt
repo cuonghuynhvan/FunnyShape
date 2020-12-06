@@ -40,10 +40,10 @@ abstract class ShapeViewModel() : ViewModel() {
         }
     }
 
-    fun changeShapeBackground() {
+    fun changeShapeBackground(shapeType: Int) {
         viewModelScope.launch(exceptionHandler) {
             _generateBackgroundActionResult.postValue(ActionResult.loading())
-            val color = callGenerateShapeBackground()
+            val color = callGenerateShapeBackground(shapeType)
             _generateBackgroundActionResult.postValue(ActionResult.success(color))
         }
     }
@@ -59,5 +59,5 @@ abstract class ShapeViewModel() : ViewModel() {
     }
 
     abstract suspend fun callGenerateShape(): Shape
-    abstract suspend fun callGenerateShapeBackground(): Any
+    abstract suspend fun callGenerateShapeBackground(shapeType:  Int): Any
 }

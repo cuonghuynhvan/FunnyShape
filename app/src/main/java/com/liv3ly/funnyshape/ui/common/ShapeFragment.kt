@@ -14,13 +14,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.liv3ly.funnyshape.R
+import com.liv3ly.funnyshape.common.Constant
 import com.liv3ly.funnyshape.common.Utils
 import com.liv3ly.funnyshape.common.Shape
 import com.liv3ly.funnyshape.common.ViewModelFactory
 import com.liv3ly.funnyshape.data.api.APIBuilder
 import com.liv3ly.funnyshape.repository.ShapeRepository
+import com.liv3ly.funnyshape.widget.CircleView
 import com.liv3ly.funnyshape.widget.ShapeLayout
 import com.liv3ly.funnyshape.widget.ShapeView
+import com.liv3ly.funnyshape.widget.SquareView
 import com.nimble.survey.module.common.ActionStatus
 
 abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
@@ -92,9 +95,15 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
 
         shapeView.setOnDoubleTabListener {
             tempShapeView = it
-            viewModel.changeShapeBackground()
+            viewModel.changeShapeBackground(getShapeType(it))
             return@setOnDoubleTabListener true
         }
+    }
+
+    private fun getShapeType(shapeView: ShapeView): Int = when (shapeView) {
+        is SquareView -> Constant.SHAPE_TYPE_SQUARE
+        is CircleView -> Constant.SHAPE_TYPE_CIRCLE
+        else -> Constant.SHAPE_TYPE_TRIANGLE
     }
 
     private fun changeShapeBackground(background: Any) {
@@ -117,7 +126,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
                             resource: Bitmap,
                             transition: Transition<in Bitmap?>?
                         ) {
-                            shapeView.shapeBitmap  = resource
+                            shapeView.shapeBitmap = resource
                             hideLoading()
                         }
 
