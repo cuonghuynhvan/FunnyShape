@@ -8,18 +8,13 @@ import kotlin.math.roundToInt
 
 class Utils {
     companion object {
-        private fun createViewByShape(context: Context, shape: Shape): ShapeView {
-            val shapeView: ShapeView = when (shape) {
-                is Square -> SquareView(context)
-                is Circle -> CircleView(context)
-                is Triangle -> TriangleView(context)
-            }
-
-            return shapeView
+        fun createViewByShape(context: Context, shape: Shape): ShapeView = when (shape) {
+            is Square -> SquareView(context)
+            is Circle -> CircleView(context)
+            is Triangle -> TriangleView(context)
         }
 
-        fun addShapeIntoShapeLayout(shape: Shape, shapeLayout: ShapeLayout): ShapeView {
-            val shapeView = createViewByShape(shapeLayout.context, shape)
+        fun addShapeViewIntoShapeLayout(shapeView: ShapeView, shapeLayout: ShapeLayout, shape: Shape): ShapeView {
             val layoutParam: FrameLayout.LayoutParams =
                 FrameLayout.LayoutParams(shape.size, shape.size)
             layoutParam.leftMargin = (shape.centerX - shape.size / 2).roundToInt()

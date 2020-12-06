@@ -105,8 +105,12 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     }
 
     private fun addShapeView(shape: Shape) {
-        val shapeView = Utils.addShapeIntoShapeLayout(shape, shapeLayout)
-        setBackgroundForShapeView(shapeView, shape.background)
+        val shapeView = Utils.createViewByShape(requireContext(), shape)
+        setBackgroundForShapeView(shapeView, shape.background) {
+            Utils.addShapeViewIntoShapeLayout(shapeView, shapeLayout, shape)
+            startShapeAnimation(shapeView)
+            hideLoading()
+        }
 
         shapeView.setOnDoubleTabListener {
             tempShapeView = it
@@ -116,16 +120,17 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     }
 
     private fun changeShapeBackground(background: Any) {
-        setBackgroundForShapeView(tempShapeView, background)
+        setBackgroundForShapeView(tempShapeView, background) {
+            hideLoading()
+        }
     }
 
-    fun setBackgroundForShapeView(shapeView: ShapeView, background: Any) {
+    fun setBackgroundForShapeView(shapeView: ShapeView, background: Any, onDone: () -> Unit) {
         when (background) {
             is Int -> {
                 shapeView.shapeBitmap = null
                 shapeView.shapeColor = background
-                startShapeAnimation(shapeView)
-                hideLoading()
+                onDone()
             }
             is String -> {
                 Glide.with(shapeView).asBitmap().load(background)
@@ -137,15 +142,14 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
                             transition: Transition<in Bitmap?>?
                         ) {
                             shapeView.shapeBitmap = resource
-                            startShapeAnimation(shapeView)
-                            hideLoading()
+                            onDone()
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {}
 
                         override fun onStop() {
                             super.onStop()
-                            hideLoading()
+                            onDone()
                         }
                     })
             }
