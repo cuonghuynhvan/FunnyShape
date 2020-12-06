@@ -8,6 +8,6 @@ class CircleViewModel(private val shapeRepository: ShapeRepository) : ShapeViewM
     override suspend fun callGenerateShape(): Shape =
         shapeRepository.generateCircle()
 
-    override suspend fun callGenerateShapeBackground(shapeType: Int): Any =
+    override suspend fun callGenerateShapeBackground(shape: Shape): Any =
         shapeRepository.generateColor()
 }

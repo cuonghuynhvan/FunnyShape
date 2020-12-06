@@ -9,6 +9,6 @@ class TriangleViewModel(private val shapeRepository: ShapeRepository) : ShapeVie
     override suspend fun callGenerateShape(): Shape =
         shapeRepository.generateTriangle(Utils.makeRandomInt(1))
 
-    override suspend fun callGenerateShapeBackground(shapeType: Int): Any =
+    override suspend fun callGenerateShapeBackground(shape: Shape): Any =
         shapeRepository.generateBackground(Utils.makeRandomInt(1))
 }

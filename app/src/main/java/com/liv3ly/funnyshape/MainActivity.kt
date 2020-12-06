@@ -7,12 +7,20 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.liv3ly.funnyshape.common.ViewModelFactory
+import com.liv3ly.funnyshape.data.api.APIBuilder
+import com.liv3ly.funnyshape.repository.ShapeRepository
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewModelFactory = ViewModelFactory(ShapeRepository(APIBuilder.getBackgroundAPIService()))
+
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)

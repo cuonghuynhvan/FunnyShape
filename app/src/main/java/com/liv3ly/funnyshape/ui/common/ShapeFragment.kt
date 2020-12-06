@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.liv3ly.funnyshape.MainActivity
 import com.liv3ly.funnyshape.R
 import com.liv3ly.funnyshape.common.Constant
 import com.liv3ly.funnyshape.common.Utils
@@ -34,8 +35,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelFactory =
-            ViewModelFactory(ShapeRepository(APIBuilder.getBackgroundAPIService()))
+        val viewModelFactory = (activity as MainActivity).viewModelFactory
         viewModel =
             ViewModelProvider(this, viewModelFactory).get(getShapeViewModelClass())
     }
@@ -56,8 +56,15 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        restoreDataFromViewModel()
         observeViewModel()
         bindViewModelAction()
+    }
+
+    private fun restoreDataFromViewModel() {
+        viewModel.shapeList.forEach {
+            addShapeView(it)
+        }
     }
 
     private fun observeViewModel() {
@@ -95,15 +102,9 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
 
         shapeView.setOnDoubleTabListener {
             tempShapeView = it
-            viewModel.changeShapeBackground(getShapeType(it))
+            viewModel.changeShapeBackground(shape)
             return@setOnDoubleTabListener true
         }
-    }
-
-    private fun getShapeType(shapeView: ShapeView): Int = when (shapeView) {
-        is SquareView -> Constant.SHAPE_TYPE_SQUARE
-        is CircleView -> Constant.SHAPE_TYPE_CIRCLE
-        else -> Constant.SHAPE_TYPE_TRIANGLE
     }
 
     private fun changeShapeBackground(background: Any) {
