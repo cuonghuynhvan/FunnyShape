@@ -45,11 +45,25 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
     }
 
     @WorkerThread
+    suspend fun generateImage(): Any {
+        try {
+            val patternList = backgroundAPIService.getRandomPatterns()
+
+            if (patternList.isNotEmpty()) {
+                return patternList[0].imageUrl
+            }
+        } catch (e: IOException) {
+        }
+
+        return generateRandomColor()
+    }
+
+    @WorkerThread
     suspend fun generateSquare(screenWidth: Int, screenHeight: Int): Shape {
         val square = Square(
             size = generateRandomSize(screenWidth, screenHeight),
         )
-        square.backgroundColor = generateColor()
+        square.background = generateImage()
         return square
     }
 
@@ -58,7 +72,7 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
         val circle = Circle(
             size = generateRandomSize(screenWidth, screenHeight),
         )
-        circle.backgroundColor = generateColor()
+        circle.background = generateColor()
         return circle
     }
 }

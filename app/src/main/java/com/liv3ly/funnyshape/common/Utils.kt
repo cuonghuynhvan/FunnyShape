@@ -1,15 +1,18 @@
-package com.liv3ly.funnyshape
+package com.liv3ly.funnyshape.common
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.widget.FrameLayout
-import com.liv3ly.funnyshape.common.Circle
-import com.liv3ly.funnyshape.common.Shape
-import com.liv3ly.funnyshape.common.Square
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.liv3ly.funnyshape.widget.CircleView
 import com.liv3ly.funnyshape.widget.ShapeLayout
 import com.liv3ly.funnyshape.widget.ShapeView
 import com.liv3ly.funnyshape.widget.SquareView
 import kotlin.math.roundToInt
+
 
 class Utils {
     companion object {
@@ -19,7 +22,6 @@ class Utils {
                 is Circle -> CircleView(context)
             }
 
-            shapeView.shapeColor = shape.backgroundColor
             return shapeView
         }
 
@@ -34,5 +36,7 @@ class Utils {
 
             return shapeView
         }
+
+        fun makeRandomInt(maxValue: Int): Int = (Math.random() * maxValue).roundToInt()
     }
 }

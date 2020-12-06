@@ -1,6 +1,7 @@
 package com.liv3ly.funnyshape.widget
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -17,6 +18,14 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
         get() = _shapeColor
         set(value) {
             this._shapeColor = value
+            invalidate()
+        }
+
+    private var _shapeBitmap: Bitmap? = null
+    var shapeBitmap: Bitmap?
+        get() = _shapeBitmap
+        set(value) {
+            this._shapeBitmap = value
             invalidate()
         }
 

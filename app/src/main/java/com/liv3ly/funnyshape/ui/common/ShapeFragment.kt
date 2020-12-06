@@ -1,6 +1,8 @@
 package com.liv3ly.funnyshape.ui.common
 
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +10,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.liv3ly.funnyshape.R
-import com.liv3ly.funnyshape.Utils
+import com.liv3ly.funnyshape.common.Utils
 import com.liv3ly.funnyshape.common.Shape
 import com.liv3ly.funnyshape.common.ViewModelFactory
 import com.liv3ly.funnyshape.data.api.APIBuilder
@@ -82,8 +87,8 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     }
 
     private fun addShapeView(shape: Shape) {
-        hideLoading()
         val shapeView = Utils.addShapeIntoShapeLayout(shape, shapeLayout)
+        setBackgroundForShapeView(shapeView, shape.background)
 
         shapeView.setOnDoubleTabListener {
             tempShapeView = it
@@ -93,10 +98,38 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     }
 
     private fun changeShapeBackground(background: Any) {
-        hideLoading()
+        setBackgroundForShapeView(tempShapeView, background)
+    }
 
-        if (background is Int) {
-            tempShapeView.shapeColor = background
+    fun setBackgroundForShapeView(shapeView: ShapeView, background: Any) {
+        when (background) {
+            is Int -> {
+                shapeView.shapeColor = background
+                hideLoading()
+            }
+            is String -> {
+                Glide.with(shapeView).asBitmap().load(background)
+                    .centerCrop()
+                    .override(shapeView.width, shapeView.height)
+                    .into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            shapeView.shapeBitmap  = resource
+                            hideLoading()
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {}
+
+                        override fun onStop() {
+                            super.onStop()
+                            hideLoading()
+                        }
+                    })
+            }
+            else -> {
+            }
         }
     }
 

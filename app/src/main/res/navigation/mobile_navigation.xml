@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/navigation_circles"
         android:name="com.liv3ly.funnyshape.ui.circle.CircleFragment"
-        android:label="@string/title_squares"
+        android:label="@string/title_circles"
         tools:layout="@layout/fragment_funny_shape" />
 
     <fragment

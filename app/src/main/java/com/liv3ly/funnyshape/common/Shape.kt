@@ -8,8 +8,7 @@ sealed class Shape {
     open var centerY: Float = 0F
     open var size: Int = 0
 
-    @ColorInt
-    open var backgroundColor: Int = Color.BLACK
+    open var background: Any = Color.BLACK
 
     fun setCenterPoint(x: Float, y: Float) {
         centerX = x
@@ -21,12 +20,12 @@ data class Square(
     override var centerX: Float = 0F,
     override var centerY: Float = 0F,
     override var size: Int = 0,
-    override var backgroundColor: Int = Color.BLACK,
+    override var background: Any = Color.BLACK,
 ) : Shape()
 
 data class Circle(
     override var centerX: Float = 0F,
     override var centerY: Float = 0F,
     override var size: Int = 0,
-    override var backgroundColor: Int = Color.BLACK,
+    override var background: Any = Color.BLACK,
 ) : Shape()

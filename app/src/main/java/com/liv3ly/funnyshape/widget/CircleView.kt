@@ -28,7 +28,7 @@ class CircleView(context: Context) : ShapeView(context) {
         }
 
         val x: Float = width / 2F
-        paint.setColor(shapeColor)
+        paint.color = shapeColor
         canvas.drawCircle(x, x, x, paint)
     }
 }
