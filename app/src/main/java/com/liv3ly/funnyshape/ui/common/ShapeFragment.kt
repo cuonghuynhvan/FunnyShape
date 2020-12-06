@@ -1,8 +1,11 @@
 package com.liv3ly.funnyshape.ui.common
 
+import android.app.Activity
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,29 +19,40 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.liv3ly.funnyshape.MainActivity
 import com.liv3ly.funnyshape.R
-import com.liv3ly.funnyshape.common.Constant
-import com.liv3ly.funnyshape.common.Utils
 import com.liv3ly.funnyshape.common.Shape
-import com.liv3ly.funnyshape.common.ViewModelFactory
-import com.liv3ly.funnyshape.data.api.APIBuilder
-import com.liv3ly.funnyshape.repository.ShapeRepository
-import com.liv3ly.funnyshape.widget.CircleView
+import com.liv3ly.funnyshape.common.Utils
 import com.liv3ly.funnyshape.widget.ShapeLayout
 import com.liv3ly.funnyshape.widget.ShapeView
-import com.liv3ly.funnyshape.widget.SquareView
 import com.nimble.survey.module.common.ActionStatus
+
 
 abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     private lateinit var viewModel: T
     private lateinit var shapeLayout: ShapeLayout
     private lateinit var loadingView: View
     private lateinit var tempShapeView: ShapeView
+    private lateinit var sensorManager: SensorManager
+    private lateinit var sensor: Sensor
+    private lateinit var shakeDetector: ShakeDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelFactory = (activity as MainActivity).viewModelFactory
+        val mainActivity = (activity as MainActivity)
+        val viewModelFactory = mainActivity.viewModelFactory
         viewModel =
             ViewModelProvider(this, viewModelFactory).get(getShapeViewModelClass())
+
+        sensorManager = mainActivity.getSystemService(Activity.SENSOR_SERVICE) as SensorManager
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        shakeDetector = ShakeDetector {
+            handleShakeEvent()
+        }
+        sensorManager.registerListener(shakeDetector, sensor, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    override fun onDestroy() {
+        sensorManager.unregisterListener(shakeDetector, sensor)
+        super.onDestroy()
     }
 
     abstract fun getShapeViewModelClass(): Class<T>
@@ -140,7 +154,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
         }
     }
 
-    private fun startShapeAnimation(shapeView: ShapeView)  {
+    private fun startShapeAnimation(shapeView: ShapeView) {
         val anim = AnimationUtils.loadAnimation(context, R.anim.anim_appear)
         shapeView.startAnimation(anim)
     }
@@ -160,5 +174,10 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
             viewModel.generateShape(it.x, it.y)
             return@setOnTapListener true
         }
+    }
+
+    private fun handleShakeEvent() {
+        // TODO connect to view model
+        shapeLayout.removeAllViews()
     }
 }

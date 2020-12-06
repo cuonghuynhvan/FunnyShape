@@ -7,6 +7,5 @@ class Constant {
 
         const val SHAPE_TYPE_SQUARE = 0
         const val SHAPE_TYPE_CIRCLE = 1
-        const val SHAPE_TYPE_TRIANGLE = 2
     }
 }
