@@ -1,24 +1,12 @@
 package com.liv3ly.funnyshape.repository
 
 import androidx.annotation.WorkerThread
-import com.liv3ly.funnyshape.common.Circle
-import com.liv3ly.funnyshape.common.Shape
-import com.liv3ly.funnyshape.common.Square
+import com.liv3ly.funnyshape.common.*
 import com.liv3ly.funnyshape.data.api.BackgroundAPIService
 import java.io.IOException
 import kotlin.math.roundToInt
 
 class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
-    private fun generateRandomSize(screenWidth: Int, screenHeight: Int): Int {
-        //        Create a shape at a random size within appropriate ranges.
-        //        A shape should not be more than 45% the width or height of the screen size
-        //        and should never be less than 10% the width or height.
-        val maxSize = Math.min(screenHeight, screenWidth) * 0.45
-        val minSize = Math.max(screenHeight, screenWidth) * 0.1
-
-        return (minSize + Math.random() * (maxSize - minSize)).roundToInt()
-    }
-
     private fun generateRandomColor(): Int {
         val r = (Math.random() * 255).roundToInt()
         val g = (Math.random() * 255).roundToInt()
@@ -59,20 +47,31 @@ class ShapeRepository(private val backgroundAPIService: BackgroundAPIService) {
     }
 
     @WorkerThread
-    suspend fun generateSquare(screenWidth: Int, screenHeight: Int): Shape {
-        val square = Square(
-            size = generateRandomSize(screenWidth, screenHeight),
-        )
+    suspend fun generateBackground(backgroundType: Int): Any =
+        when (backgroundType) {
+            Constant.BACKGROUND_TYPE_COLOR -> generateColor()
+            Constant.BACKGROUND_TYPE_IMAGE -> generateImage()
+            else -> generateColor()
+        }
+
+    @WorkerThread
+    suspend fun generateSquare(): Shape {
+        val square = Square()
         square.background = generateImage()
         return square
     }
 
     @WorkerThread
-    suspend fun generateCircle(screenWidth: Int, screenHeight: Int): Shape {
-        val circle = Circle(
-            size = generateRandomSize(screenWidth, screenHeight),
-        )
-        circle.background = generateColor()
-        return circle
+    suspend fun generateCircle(): Shape {
+        val shape = Circle()
+        shape.background = generateColor()
+        return shape
+    }
+
+    @WorkerThread
+    suspend fun generateTriangle(backgroundType: Int): Shape {
+        val shape = Triangle()
+        shape.background = generateBackground(backgroundType)
+        return shape
     }
 }

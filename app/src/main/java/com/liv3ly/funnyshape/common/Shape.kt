@@ -29,3 +29,10 @@ data class Circle(
     override var size: Int = 0,
     override var background: Any = Color.BLACK,
 ) : Shape()
+
+data class Triangle(
+    override var centerX: Float = 0F,
+    override var centerY: Float = 0F,
+    override var size: Int = 0,
+    override var background: Any = Color.BLACK,
+) : Shape()

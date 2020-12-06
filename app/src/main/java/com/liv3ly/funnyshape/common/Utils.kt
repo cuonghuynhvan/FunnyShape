@@ -1,18 +1,10 @@
 package com.liv3ly.funnyshape.common
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.FrameLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.liv3ly.funnyshape.widget.CircleView
-import com.liv3ly.funnyshape.widget.ShapeLayout
-import com.liv3ly.funnyshape.widget.ShapeView
-import com.liv3ly.funnyshape.widget.SquareView
+import com.liv3ly.funnyshape.widget.*
 import kotlin.math.roundToInt
-
 
 class Utils {
     companion object {
@@ -20,6 +12,7 @@ class Utils {
             val shapeView: ShapeView = when (shape) {
                 is Square -> SquareView(context)
                 is Circle -> CircleView(context)
+                is Triangle -> TriangleView(context)
             }
 
             return shapeView
@@ -37,6 +30,10 @@ class Utils {
             return shapeView
         }
 
-        fun makeRandomInt(maxValue: Int): Int = (Math.random() * maxValue).roundToInt()
+        fun makeRandomInt(maxValue: Int): Int {
+            val result = (Math.random() * maxValue)
+            Log.d("MAKE_RANDOM_INT", "${maxValue}: ${result} - ${result.roundToInt()}")
+            return result.roundToInt()
+        }
     }
 }

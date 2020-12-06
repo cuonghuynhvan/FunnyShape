@@ -104,6 +104,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     fun setBackgroundForShapeView(shapeView: ShapeView, background: Any) {
         when (background) {
             is Int -> {
+                shapeView.shapeBitmap = null
                 shapeView.shapeColor = background
                 hideLoading()
             }

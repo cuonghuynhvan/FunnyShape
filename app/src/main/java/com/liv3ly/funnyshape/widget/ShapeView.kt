@@ -104,10 +104,10 @@ open class ShapeView : View, GestureDetector.OnGestureListener,
     }
 
     override fun onDoubleTap(e: MotionEvent?): Boolean {
-        return true
+        return mOnDoubleTapListener != null && mOnDoubleTapListener!!(this)
     }
 
     override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-        return mOnDoubleTapListener != null && mOnDoubleTapListener!!(this)
+        return true
     }
 }

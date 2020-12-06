@@ -22,9 +22,9 @@ class ViewModelFactory constructor(
             return CircleViewModel(shapeRepository) as T
         }
 
-//        if (modelClass.isAssignableFrom(TriangleViewModel::class.java)) {
-//            return TriangleViewModel(shapeRepository) as T
-//        }
+        if (modelClass.isAssignableFrom(TriangleViewModel::class.java)) {
+            return TriangleViewModel(shapeRepository) as T
+        }
 //
 //        if (modelClass.isAssignableFrom(AllViewModel::class.java)) {
 //            return AllViewModel(shapeRepository) as T
