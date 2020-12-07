@@ -24,7 +24,5 @@ class ShakeDetector(private val onShake: () -> Unit): SensorEventListener {
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 }
