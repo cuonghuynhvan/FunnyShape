@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.liv3ly.funnyshape.common.ViewModelFactory
 import com.liv3ly.funnyshape.data.api.APIBuilder
 import com.liv3ly.funnyshape.repository.ShapeRepository
+import com.liv3ly.funnyshape.ui.common.RandomTypeProvider
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,15 +20,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModelFactory = ViewModelFactory(ShapeRepository(APIBuilder.getBackgroundAPIService()))
+        viewModelFactory = ViewModelFactory(
+            ShapeRepository(APIBuilder.getBackgroundAPIService()),
+            RandomTypeProvider()
+        )
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.navigation_squares, R.id.navigation_circles, R.id.navigation_triangles, R.id.navigation_all))
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_squares,
+                R.id.navigation_circles,
+                R.id.navigation_triangles,
+                R.id.navigation_all
+            )
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

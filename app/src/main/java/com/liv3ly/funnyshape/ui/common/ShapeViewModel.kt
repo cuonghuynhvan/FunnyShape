@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 abstract class ShapeViewModel() : ViewModel() {
-    private val _generateActionResult = MutableLiveData<ActionResult<Shape>>()
-    val generateActionResult: LiveData<ActionResult<Shape>> = _generateActionResult
+    private val _generateShapeActionResult = MutableLiveData<ActionResult<Shape>>()
+    val generateShapeActionResult: LiveData<ActionResult<Shape>> = _generateShapeActionResult
 
     private val _generateBackgroundActionResult = MutableLiveData<ActionResult<Any>>()
     val generateBackgroundActionResult: LiveData<ActionResult<Any>> = _generateBackgroundActionResult
@@ -21,7 +21,7 @@ abstract class ShapeViewModel() : ViewModel() {
     private var screenHeight = 0
 
     private val exceptionHandler = CoroutineExceptionHandler { _, _ ->
-        _generateActionResult.postValue(ActionResult.error(R.string.common_error))
+        _generateShapeActionResult.postValue(ActionResult.error(R.string.common_error))
     }
 
     fun setScreenSize(width: Int, height: Int) {
@@ -31,11 +31,11 @@ abstract class ShapeViewModel() : ViewModel() {
 
     fun generateShape(x: Float, y: Float) {
         viewModelScope.launch(exceptionHandler) {
-            _generateActionResult.postValue(ActionResult.loading())
+            _generateShapeActionResult.postValue(ActionResult.loading())
             val shape = callGenerateShape()
             shape.size = generateRandomSize()
             shape.setCenterPoint(x, y)
-            _generateActionResult.postValue(ActionResult.success(shape))
+            _generateShapeActionResult.postValue(ActionResult.success(shape))
         }
     }
 

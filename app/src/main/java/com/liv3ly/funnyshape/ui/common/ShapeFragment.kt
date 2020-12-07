@@ -76,7 +76,7 @@ abstract class ShapeFragment<T : ShapeViewModel> : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.generateActionResult.observe(viewLifecycleOwner, Observer {
+        viewModel.generateShapeActionResult.observe(viewLifecycleOwner, Observer {
             val shapeResult = it ?: return@Observer
 
             when (shapeResult.status) {
